@@ -188,6 +188,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 /* Country profile modal */
 .quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
 .quick-item{background:#FAF7EE;border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+.quick-capital{grid-column:1 / -1;background:linear-gradient(180deg,#FBF8EF,#FAF7EE);border:1px dashed var(--gold)}
+.quick-note{font-size:10.5px;color:var(--muted);line-height:1.7;margin-top:10px}
 .quick-key{font-size:9.5px;font-weight:700;letter-spacing:1.2px;color:var(--accent);
   text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:6px}
 .quick-key::before{content:"";width:14px;height:2px;background:var(--gold);border-radius:1px;flex-shrink:0}
@@ -2064,7 +2066,8 @@ const COUNTRY_INFO={
       location:{en:"North America, between the Atlantic and Pacific oceans.",cn:"位于北美洲，东临大西洋，西临太平洋。"},
       population:{en:"About 335 million people (2023).",cn:"人口约3.35亿（2023年）。"},
       languages:{en:"English is the main language; Spanish is widely spoken; over 300 immigrant languages are used.",cn:"英语为主要语言；西班牙语使用广泛；还有300多种移民语言。"},
-      divisions:{en:"50 states plus Washington D.C. — often grouped into the Northeast, South, Midwest and West.",cn:"50个州加华盛顿特区——常分为东北部、南部、中西部和西部。"}
+      divisions:{en:"50 states plus Washington D.C. — often grouped into the Northeast, South, Midwest and West.",cn:"50个州加华盛顿特区——常分为东北部、南部、中西部和西部。"},
+      capital:{en:"Washington, D.C. — 38.9°N, 77.0°W",cn:"华盛顿特区 — 北纬38.9°，西经77.0°"}
     },
     briefing:{en:"The United States is a nation of immigrants, so people come from many ethnic backgrounds and follow many religions. Regions differ a lot in history and culture — for example, the South has a strong food and music tradition while New England is famous for its colonial history and universities.",cn:"美国是一个移民国家，人们来自许多族群、信仰许多宗教。各地区历史文化差异很大——例如南部以美食和音乐传统著称，新英格兰则以其殖民历史和大学闻名。"},
     radar:[45,95,78,65,50,90]
@@ -2074,7 +2077,8 @@ const COUNTRY_INFO={
       location:{en:"An island nation in East Asia, east of the Asian mainland.",cn:"东亚岛国，位于亚洲大陆以东。"},
       population:{en:"About 125 million people (2023).",cn:"人口约1.25亿（2023年）。"},
       languages:{en:"Japanese (standard plus many dialects); Ryukyuan languages in Okinawa and Ainu in Hokkaido.",cn:"日语（标准语加多种方言）；冲绳有琉球语，北海道有阿伊努语。"},
-      divisions:{en:"47 prefectures in 8 regions — Hokkaido, Tohoku, Kanto, Chubu, Kansai, Chugoku, Shikoku and Kyushu/Okinawa.",cn:"47个都道府县，分北海道、东北、关东、中部、关西、中国、四国、九州/冲绳8个地区。"}
+      divisions:{en:"47 prefectures in 8 regions — Hokkaido, Tohoku, Kanto, Chubu, Kansai, Chugoku, Shikoku and Kyushu/Okinawa.",cn:"47个都道府县，分北海道、东北、关东、中部、关西、中国、四国、九州/冲绳8个地区。"},
+      capital:{en:"Tokyo — 35.7°N, 139.7°E",cn:"东京 — 北纬35.7°，东经139.7°"}
     },
     briefing:{en:"Japan is one of the world's most culturally unified societies, with small minority groups such as the Ainu and Ryukyuans. Shinto and Buddhism blend together in daily life. Each region keeps its own dialects, festivals and foods.",cn:"日本是世界上文化同质性较高的社会之一，有阿伊努、琉球等少数民族。神道与佛教在日常生活中融合。各地区保留着自己的方言、祭典和饮食。"},
     radar:[75,25,85,65,70,75]
@@ -2084,7 +2088,8 @@ const COUNTRY_INFO={
       location:{en:"South Asia — the Himalayas to the north, oceans around the peninsula.",cn:"南亚——北靠喜马拉雅山，半岛三面环海。"},
       population:{en:"About 1.43 billion people (2023, the world's most populous country).",cn:"人口约14.3亿（2023年，世界人口第一）。"},
       languages:{en:"22 official languages; Hindi and English are used by the government; hundreds more are spoken.",cn:"22种官方语言；政府主要使用印地语和英语；民间还有数百种语言。"},
-      divisions:{en:"28 states and 8 union territories — often grouped into North, South, East, West and Northeast.",cn:"28个邦和8个联邦属地——常分为北部、南部、东部、西部和东北部。"}
+      divisions:{en:"28 states and 8 union territories — often grouped into North, South, East, West and Northeast.",cn:"28个邦和8个联邦属地——常分为北部、南部、东部、西部和东北部。"},
+      capital:{en:"New Delhi — 28.6°N, 77.2°E",cn:"新德里 — 北纬28.6°，东经77.2°"}
     },
     briefing:{en:"India is extremely diverse — many ethnic groups, languages and religions (Hinduism, Islam, Christianity, Sikhism, Buddhism and Jainism) live side by side. Family, region and local traditions shape everyday life differently from place to place.",cn:"印度极度多元——众多族群、语言和宗教（印度教、伊斯兰教、基督教、锡克教、佛教、耆那教）共存。家庭、地区和当地传统在不同地方塑造着不同的日常生活。"},
     radar:[70,35,90,85,60,70]
@@ -2094,7 +2099,8 @@ const COUNTRY_INFO={
       location:{en:"South America — the largest country on the continent.",cn:"南美洲——南美洲面积最大的国家。"},
       population:{en:"About 216 million people (2023).",cn:"人口约2.16亿（2023年）。"},
       languages:{en:"Portuguese (Brazil is the only Portuguese-speaking country in the Americas); many indigenous languages survive.",cn:"葡萄牙语（巴西是美洲唯一的葡语国家）；许多原住民语言仍在传承。"},
-      divisions:{en:"26 states plus the Federal District — grouped into North, Northeast, Central-West, Southeast and South.",cn:"26个州加联邦区——分为北部、东北部、中西部、东南部和南部。"}
+      divisions:{en:"26 states plus the Federal District — grouped into North, Northeast, Central-West, Southeast and South.",cn:"26个州加联邦区——分为北部、东北部、中西部、东南部和南部。"},
+      capital:{en:"Brasília — 15.8°S, 47.9°W",cn:"巴西利亚 — 南纬15.8°，西经47.9°"}
     },
     briefing:{en:"Brazil was shaped by the meeting of Portuguese settlers, African peoples and indigenous groups, with European and Asian immigrants arriving later. Its music, food and festivals mix these influences, and each region has a strong identity of its own.",cn:"巴西由葡萄牙移民、非洲人与原住民相遇交融而成，后来又加入欧亚移民。音乐、美食和节日融合了这些影响，每个地区都有强烈的自身认同。"},
     radar:[65,80,70,75,55,70]
@@ -2104,7 +2110,8 @@ const COUNTRY_INFO={
       location:{en:"Western Europe, between the Atlantic and the Mediterranean.",cn:"西欧，介于大西洋与地中海之间。"},
       population:{en:"About 68 million people (2023).",cn:"人口约6800万（2023年）。"},
       languages:{en:"French is the official language; regional languages such as Occitan, Breton and Alsatian are still spoken.",cn:"法语为官方语言；奥克语、布列塔尼语、阿尔萨斯语等地区语言仍在流传。"},
-      divisions:{en:"18 regions (13 in mainland France); old historical provinces still shape local identity.",cn:"18个大区（本土13个）；古老的历史行省仍塑造着地方认同。"}
+      divisions:{en:"18 regions (13 in mainland France); old historical provinces still shape local identity.",cn:"18个大区（本土13个）；古老的历史行省仍塑造着地方认同。"},
+      capital:{en:"Paris — 48.9°N, 2.4°E",cn:"巴黎 — 北纬48.9°，东经2.4°"}
     },
     briefing:{en:"France blends Celtic, Roman and Germanic roots with later waves of immigration. It is a secular republic (laïcité) with a strong Catholic heritage, and today includes many religions and cultures, especially in its big cities.",cn:"法国融合了凯尔特、罗马、日耳曼的根源与后来的移民浪潮。它是一个世俗共和国（laïcité），有着深厚的天主教传统，如今在大城市中融入了许多宗教与文化。"},
     radar:[50,70,90,60,65,85]
@@ -2114,7 +2121,8 @@ const COUNTRY_INFO={
       location:{en:"West Africa, on the coast of the Gulf of Guinea.",cn:"西非，濒临几内亚湾海岸。"},
       population:{en:"About 220 million people (2023, Africa's most populous country).",cn:"人口约2.2亿（2023年，非洲人口第一）。"},
       languages:{en:"English is the official language; Hausa, Yoruba and Igbo are the major ones; 500+ languages and Pidgin are spoken.",cn:"英语为官方语言；豪萨语、约鲁巴语、伊博语为三大语言；还有500多种语言，皮钦英语也很普遍。"},
-      divisions:{en:"36 states plus the Federal Capital Territory — usually grouped into North and South.",cn:"36个州加联邦首都区——通常分为北部和南部。"}
+      divisions:{en:"36 states plus the Federal Capital Territory — usually grouped into North and South.",cn:"36个州加联邦首都区——通常分为北部和南部。"},
+      capital:{en:"Abuja — 9.1°N, 7.4°E",cn:"阿布贾 — 北纬9.1°，东经7.4°"}
     },
     briefing:{en:"Nigeria is home to more than 250 ethnic groups. The north is mainly Muslim and the south mainly Christian, with traditional religions still alive. Its cities mix old traditions with music, film and global pop culture.",cn:"尼日利亚有250多个族群。北部以伊斯兰教为主，南部以基督教为主，传统宗教仍在传承。城市里传统与现代音乐、电影和全球流行文化交融。"},
     radar:[60,40,85,90,65,60]
@@ -2124,7 +2132,8 @@ const COUNTRY_INFO={
       location:{en:"North America, south of the United States, between two oceans.",cn:"北美洲，位于美国以南，处于两大洋之间。"},
       population:{en:"About 128 million people (2023).",cn:"人口约1.28亿（2023年）。"},
       languages:{en:"Spanish is the official language; 68 national languages include Nahuatl and Maya.",cn:"西班牙语为官方语言；另有68种国家语言，包括纳瓦特尔语和玛雅语。"},
-      divisions:{en:"32 states — usually grouped into the North, the Centre and the South.",cn:"32个州——通常分为北部、中部和南部。"}
+      divisions:{en:"32 states — usually grouped into the North, the Centre and the South.",cn:"32个州——通常分为北部、中部和南部。"},
+      capital:{en:"Mexico City — 19.4°N, 99.1°W",cn:"墨西哥城 — 北纬19.4°，西经99.1°"}
     },
     briefing:{en:"Mexican culture joins ancient indigenous civilizations (such as the Aztec and Maya) with Spanish colonial influence. Most people share a strong Catholic faith and family-centred life, while each region keeps its own food, music and festivals.",cn:"墨西哥文化融合了古老的原住民文明（如阿兹特克和玛雅）与西班牙殖民影响。大多数人信仰浓厚的天主教、以家庭为中心，而每个地区都保留着自己的饮食、音乐和节日。"},
     radar:[70,60,85,78,80,75]
@@ -2134,7 +2143,8 @@ const COUNTRY_INFO={
       location:{en:"Middle East, covering most of the Arabian Peninsula.",cn:"中东，占据阿拉伯半岛的大部分。"},
       population:{en:"About 36 million people, including many foreign workers.",cn:"人口约3600万，其中包括大量外籍务工人员。"},
       languages:{en:"Arabic is the official language (with Najdi and Hejazi dialects); English is common in business.",cn:"阿拉伯语为官方语言（分内志、汉志等方言）；英语在商务中通用。"},
-      divisions:{en:"13 regions (provinces); historic areas include the Hijaz, Najd and the Eastern Province.",cn:"13个地区（省）；历史分区包括汉志、内志和东部省。"}
+      divisions:{en:"13 regions (provinces); historic areas include the Hijaz, Najd and the Eastern Province.",cn:"13个地区（省）；历史分区包括汉志、内志和东部省。"},
+      capital:{en:"Riyadh — 24.7°N, 46.7°E",cn:"利雅得 — 北纬24.7°，东经46.7°"}
     },
     briefing:{en:"Saudi Arabia is an Arab and Islamic society shaped by Bedouin tradition and by being the birthplace of Islam. Life on the coast differs from life in the desert interior, and cities are blending tradition with rapid modern change.",cn:"沙特阿拉伯是阿拉伯伊斯兰社会，深受贝都因传统影响，也是伊斯兰教的发源地。沿海生活与沙漠内陆不同，城市正在把传统与快速的现代化融合在一起。"},
     radar:[65,60,85,95,70,75]
@@ -2144,7 +2154,8 @@ const COUNTRY_INFO={
       location:{en:"East Asia — the largest country in Asia by area.",cn:"位于东亚，是亚洲面积最大的国家。"},
       population:{en:"About 1.41 billion people (2023).",cn:"人口约14.1亿（2023年）。"},
       languages:{en:"Putonghua (Mandarin) is the common language; seven major dialect groups and dozens of minority languages exist.",cn:"普通话为通用语言；存在七大方言区和数十种少数民族语言。"},
-      divisions:{en:"34 provincial-level units — 23 provinces, 5 autonomous regions, 4 municipalities and 2 special administrative regions; often grouped into North, South, East, Central, West and Northeast.",cn:"34个省级行政区——23省、5自治区、4直辖市、2特别行政区；常分为华北、华南、华东、华中、西部和东北。"}
+      divisions:{en:"34 provincial-level units — 23 provinces, 5 autonomous regions, 4 municipalities and 2 special administrative regions; often grouped into North, South, East, Central, West and Northeast.",cn:"34个省级行政区——23省、5自治区、4直辖市、2特别行政区；常分为华北、华南、华东、华中、西部和东北。"},
+      capital:{en:"Beijing — 39.9°N, 116.4°E",cn:"北京 — 北纬39.9°，东经116.4°"}
     },
     briefing:{en:"China has 56 ethnic groups — the Han make up about 91% of the people. Confucianism, Buddhism, Taoism and folk beliefs coexist, and different regions carry very different dialects, foods and customs shaped by long history.",cn:"中国有56个民族——汉族约占91%。儒家、佛教、道教与民间信仰共存，漫长的历史让不同地区拥有非常不同的方言、饮食与习俗。"},
     radar:[70,40,85,60,55,70]
@@ -2346,6 +2357,7 @@ function openCountryModal(countryId){
   const info=COUNTRY_INFO[countryId];
   const quickItems=[
     ["位置 Location",info.quick.location],
+    ["首都及坐标 Capital & Coordinates",info.quick.capital],
     ["人口 Population",info.quick.population],
     ["主要语言 Main Languages",info.quick.languages],
     ["主要分区 Main Regions",info.quick.divisions]
@@ -2362,13 +2374,14 @@ function openCountryModal(countryId){
       <div class="m-section">
         <div class="m-label">基本介绍 A Quick Look</div>
         <div class="quick-grid">
-          ${quickItems.map(([k,v])=>`
-            <div class="quick-item">
+          ${quickItems.map(([k,v],i)=>`
+            <div class="quick-item${i===1?" quick-capital":""}">
               <div class="quick-key">${k}</div>
               <div class="quick-val-en">${v.en}</div>
               <div class="quick-val-cn">${v.cn}</div>
             </div>`).join("")}
         </div>
+        <p class="quick-note">经纬度以各国首都为参考点。国家面积很大时，不同地区的情况差异明显，坐标只作为探究的起点。<br>Coordinates mark each capital as a reference point. In very large countries conditions vary a lot by region, so use them only as a starting point.</p>
       </div>
       <div class="m-section">
         <div class="m-label">文化简介 Cultural Briefing</div>
