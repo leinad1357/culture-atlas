@@ -134,7 +134,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .modal-overlay{position:fixed;inset:0;background:rgba(8,22,22,.55);display:none;
   align-items:center;justify-content:center;z-index:60;padding:18px;backdrop-filter:blur(3px)}
 .modal-overlay.open{display:flex}
-.modal{background:var(--card);border-radius:16px;max-width:740px;width:100%;
+.modal{background:var(--card);border-radius:16px;max-width:920px;width:100%;
   max-height:88vh;overflow-y:auto;box-shadow:0 24px 70px rgba(0,0,0,.35);
   animation:modalIn .28s cubic-bezier(.2,.8,.3,1)}
 @keyframes modalIn{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
@@ -201,6 +201,21 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .radar-note b{color:var(--accent);font-weight:600}
 @media(max-width:520px){.quick-grid{grid-template-columns:1fr}}
 
+/* Country profile modal: main content + map link side panel */
+.country-modal-body{display:grid;grid-template-columns:1fr 236px;gap:24px;align-items:start}
+.country-map-side{display:flex;flex-direction:column;gap:9px;position:sticky;top:0}
+.map-link-btn{display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:12px;
+  background:linear-gradient(180deg,#0E3A3A,#0C3232);color:#fff;text-decoration:none;
+  box-shadow:0 6px 16px rgba(14,58,58,.22);transition:filter .15s,transform .12s,box-shadow .15s}
+.map-link-btn:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 10px 22px rgba(14,58,58,.28)}
+.map-link-btn:active{transform:translateY(0)}
+.map-link-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.map-link-ico{flex-shrink:0;width:20px;height:20px}
+.map-link-txt{flex:1;min-width:0;font-size:12.5px;font-weight:700;line-height:1.45}
+.map-link-txt em{font-style:normal;font-size:9.5px;font-weight:400;opacity:.75;letter-spacing:.3px}
+.map-link-go{font-size:15px;opacity:.85;flex-shrink:0}
+.map-note{font-size:10.5px;color:var(--muted);line-height:1.7}
+
 /* Scrollbar */
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-thumb{background:#D4C9A8;border-radius:3px}
@@ -222,6 +237,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   .modal{max-height:92vh}
   .modal-head{padding:16px 18px}
   .modal-body{padding:18px}
+  .country-modal-body{grid-template-columns:1fr}
+  .country-map-side{position:static}
   .home{padding:24px 16px 34px}
   .home-title{font-size:34px}
   .home-subtitle{font-size:17px;letter-spacing:6px;text-indent:6px}
@@ -2351,6 +2368,15 @@ function radarSvg(scores,color){
   return `<svg class="radar-svg" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Cultural source radar">${g}</svg>`;
 }
 
+/* Baidu Maps search link for a country (opens in a new tab).
+   The full querytype/da_src/wd parameter set is required: the plain
+   /search/<kw> form only centers the map and never fills the search box. */
+function mapLinkHref(countryCn){
+  return "https://map.baidu.com/search?querytype=s&da_src=searchbox.button&wd=" +
+    encodeURIComponent(countryCn) +
+    "&src=0&pn=0&sug=1&l=12&from=webmap&tn=B_NORMAL_MAP&ie=utf-8";
+}
+
 /* Country profile modal: A Quick Look / Cultural Briefing / Cultural Source radar */
 function openCountryModal(countryId){
   const country=countryId==="CN"?CHINA:COUNTRIES.find(c=>c.id===countryId);
@@ -2370,29 +2396,40 @@ function openCountryModal(countryId){
       </div>
       <button class="modal-close" id="modalClose" aria-label="关闭">×</button>
     </div>
-    <div class="modal-body">
-      <div class="m-section">
-        <div class="m-label">基本介绍 A Quick Look</div>
-        <div class="quick-grid">
-          ${quickItems.map(([k,v],i)=>`
-            <div class="quick-item${i===1?" quick-capital":""}">
-              <div class="quick-key">${k}</div>
-              <div class="quick-val-en">${v.en}</div>
-              <div class="quick-val-cn">${v.cn}</div>
-            </div>`).join("")}
+    <div class="modal-body country-modal-body">
+      <div class="country-modal-main">
+        <div class="m-section">
+          <div class="m-label">基本介绍 A Quick Look</div>
+          <div class="quick-grid">
+            ${quickItems.map(([k,v],i)=>`
+              <div class="quick-item${i===1?" quick-capital":""}">
+                <div class="quick-key">${k}</div>
+                <div class="quick-val-en">${v.en}</div>
+                <div class="quick-val-cn">${v.cn}</div>
+              </div>`).join("")}
+          </div>
+          <p class="quick-note">经纬度以各国首都为参考点。国家面积很大时，不同地区的情况差异明显，坐标只作为探究的起点。<br>Coordinates mark each capital as a reference point. In very large countries conditions vary a lot by region, so use them only as a starting point.</p>
         </div>
-        <p class="quick-note">经纬度以各国首都为参考点。国家面积很大时，不同地区的情况差异明显，坐标只作为探究的起点。<br>Coordinates mark each capital as a reference point. In very large countries conditions vary a lot by region, so use them only as a starting point.</p>
+        <div class="m-section">
+          <div class="m-label">文化简介 Cultural Briefing</div>
+          <p class="m-bi-en">${info.briefing.en}</p>
+          <p class="m-bi-cn">${info.briefing.cn}</p>
+        </div>
+        <div class="m-section">
+          <div class="m-label">文化来源 Cultural Source · 六维影响雷达</div>
+          <div class="radar-box">${radarSvg(info.radar,country.color)}</div>
+          <p class="radar-note"><b>怎么看这张图？</b>六个维度代表文化可能受到的不同影响来源。数值越高，代表该来源对当下文化的影响越强。<b>请注意</b>：这是帮助我们比较和思考的示意性评估（0–100），并非研究数据。<br>${"How to read it: six possible sources of cultural influence. A higher number means a stronger influence on today's culture. Please note: these are indicative scores for comparison and thinking — not research data."}</p>
+        </div>
       </div>
-      <div class="m-section">
-        <div class="m-label">文化简介 Cultural Briefing</div>
-        <p class="m-bi-en">${info.briefing.en}</p>
-        <p class="m-bi-cn">${info.briefing.cn}</p>
-      </div>
-      <div class="m-section">
-        <div class="m-label">文化来源 Cultural Source · 六维影响雷达</div>
-        <div class="radar-box">${radarSvg(info.radar,country.color)}</div>
-        <p class="radar-note"><b>怎么看这张图？</b>六个维度代表文化可能受到的不同影响来源。数值越高，代表该来源对当下文化的影响越强。<b>请注意</b>：这是帮助我们比较和思考的示意性评估（0–100），并非研究数据。<br>${"How to read it: six possible sources of cultural influence. A higher number means a stronger influence on today's culture. Please note: these are indicative scores for comparison and thinking — not research data."}</p>
-      </div>
+      <aside class="country-map-side">
+        <div class="m-label">地图定位 Map</div>
+        <a class="map-link-btn" href="${mapLinkHref(country.cn)}" target="_blank" rel="noopener" title="在百度地图中搜索「${country.cn}」">
+          <svg class="map-link-ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#fff"/></svg>
+          <span class="map-link-txt">地图 · 百度地图搜索<br><em>Map · Search in Baidu Maps</em></span>
+          <span class="map-link-go" aria-hidden="true">↗</span>
+        </a>
+        <p class="map-note">点击后将在百度地图中搜索「${country.cn}」并显示位置。<br>Opens Baidu Maps and searches for "${country.en}" to show its location.</p>
+      </aside>
     </div>`;
   $("modalOverlay").classList.add("open");
   $("modalClose").addEventListener("click",closeModal);
